@@ -1,40 +1,46 @@
-import streamlit as st
-import pandas as pd
+import streamlit as streamlit
+import pandas as pandas
 
-st.set_page_config(page_title="Meu Movie Wrapped", layout="wide")
+streamlit.set_page_config(page_title="Movie Wrapped", layout="wide", page_icon="🎬")
 
-st.title("Meu Ano em Filmes")
-st.markdown("---")
+streamlit.markdown("""
+    <style>
+    .movie-card { border-radius: 10px; background-color: #1e1e1e; padding: 10px; margin-bottom: 20px; }
+    .movie-title { font-size: 1.1rem; font-weight: bold; color: white; margin-top: 10px; }
+    </style>
+""", unsafe_allow_html=True)
 
-df = pd.read_csv("meus_filmes_enriquecidos.csv")
+@streamlit.cache_data
+def load_data():
+    return pandas.read_csv("data/movies_enriched.csv")
+
+dataframe = load_data()
+
+streamlit.title("🎬Meu Ano em Filmes")
+streamlit.sidebar.header("⚙️ Filtros")
+nota_minima = streamlit.slider("Nnota minima", 0.0, 10.0, 7.0)
 
 # --- NOVO: SEÇÃO DE ESTATÍSTICAS ---
-col1, col2, col3 = st.columns(3)
+coluna1, coluna2, coluna3 = streamlit.columns(3)
+coluna1.metric("Filmes Assistidos", len(dataframe))
+coluna2.metric("Média Geral", f"{dataframe['personal_rating'].mean():.1f}")
+coluna3.metric("Favoritos (Nota 10)", len(dataframe[dataframe['personal_rating'] == 10]))
 
-with col1:
-    st.metric(label="Total de Filmes", value=len(df))
+dataframe_filtered = dataframe[dataframe['personal_rating'] >= nota_minima]
 
-with col2:
-    media_nota = df['personal_rating'].mean()
-    st.metric(label="Média de Notas", value=f"{media_nota:.1f} ⭐")
 
-with col3:
-    # Conta quantos filmes têm nota 10
-    top_filmes = len(df[df['personal_rating'] == 10])
-    st.metric(label="Favoritos (Nota 10)", value=top_filmes)
+colunas = streamlit.columns(4)
+for index, row in dataframe_filtered.reset_index().iterrows():
+    with colunas[index % 4]:
+        tmdb_url = f"https://www.themoviedb.org/movie/{row['tmdb_id']}"
 
-nota_minima = st.slider("Filtar por nota minima", 0.0, 10.0, 7.0)
+        streamlit.markdown(f'''
+            <a href="{tmdb_url}" target="_blank">
+                <img src="{row['poster_url']}" style="width=100%; border-radius:10px; hover: opacity: 0.8;">
+            </a>
+        ''', unsafe_allow_html=True)
 
-df_filtrado = df[df['personal_rating'] >= nota_minima]
-
-cols = st.columns(4)
-
-for index, row in df_filtrado.reset_index().iterrows():
-    with cols[index % 4]:
-        if pd.notna(row['poster_url']):
-            st.image(row['poster_url'], caption=f"`{row['title']} ({int(row['launching_year'])})")
-        else:
-            st.warning(f"Sem poster para {row['title']}")
-
-        
-        st.write(f"Minha nota: **{row['personal_rating']}**")
+        streamlit.markdown(f"**{row['title']}**")
+        streamlit.caption(f"_{row['original_title']}_ ({int(row['launching_year'])})")
+        streamlit.markdown(f"🎥 {row['director']}")
+        streamlit.write(f"⭐ Minha Nota: **{row['personal_rating']}**")
