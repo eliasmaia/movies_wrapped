@@ -1,4 +1,4 @@
-import pandas as pandas
+import pandas as pd
 import time
 
 class MovieProcessor:
@@ -6,7 +6,7 @@ class MovieProcessor:
         self.client = client
 
     def enrich_csv(self, input_path, output_path):
-        dataframe = pandas.read_csv(input_path, skipinitialspace=True)
+        dataframe = pd.read_csv(input_path, skipinitialspace=True)
         enriched_data = []
 
         for index, row in dataframe.iterrows():
@@ -28,4 +28,4 @@ class MovieProcessor:
 
             time.sleep(0.2)
 
-        pandas.DataFrame(enriched_data).to_csv(output_path, index=False)
+        pd.DataFrame(enriched_data).to_csv(output_path, index=False)
