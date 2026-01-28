@@ -1,20 +1,20 @@
-title,launching_year,personal_rating,original_title,director,poster_url,tmdb_id
-Superman,2025,9.0,Superman,James Gunn,https://image.tmdb.org/t/p/w500/xeZ8oG6W60fEPf9yCjERUXiHRBF.jpg,1061474
-The Fantastic 4: First Steps,2025,7.0,The Fantastic 4: First Steps,Matt Shakman,https://image.tmdb.org/t/p/w500/hlWOAWRKSno6UxaE0IXDFVvmzTf.jpg,617126
-A Walk in the Woods,2015,7.0,A Walk in the Woods,Ken Kwapis,https://image.tmdb.org/t/p/w500/32VIPl1RG9BgJUuydK6qUdjFzCo.jpg,232572
-Million Dollar Baby,2004,9.0,Million Dollar Baby,Clint Eastwood,https://image.tmdb.org/t/p/w500/edzbBaAHoJGvmNtY2Qck936AgnI.jpg,70
-American Fiction,2023,9.0,American Fiction,Cord Jefferson,https://image.tmdb.org/t/p/w500/bndwT7YCJv9nEHGSXuzvx9PJ013.jpg,1056360
-The Apprentice,2024,8.8,The Apprentice,Ali Abbasi,https://image.tmdb.org/t/p/w500/kSXqBw3QzKqSx8ZAeWL9ms1zw2n.jpg,1182047
-Of Mice and Men,1992,7.5,Of Mice and Men,Gary Sinise,https://image.tmdb.org/t/p/w500/lnecIARJi0C2n5VuDOcVNZmU38.jpg,9609
-Conclave,2024,8.9,Conclave,Edward Berger,https://image.tmdb.org/t/p/w500/wWn78TMMw8yOdr5sG0Yl9v4saoA.jpg,974576
-Green Book,2018,9.0,Green Book,Peter Farrelly,https://image.tmdb.org/t/p/w500/u9dldwRwQjTZGlIxKaAtAPLAjOv.jpg,490132
-American Sniper,2014,8.7,American Sniper,Clint Eastwood,https://image.tmdb.org/t/p/w500/mAXzc2oDTTYcnn6IGHlSXvmXloG.jpg,190859
-Scent of a Woman,1992,8.0,Scent of a Woman,Martin Brest,https://image.tmdb.org/t/p/w500/7vYWmKziZCfuXuIesRdVHUtXaLY.jpg,9475
-A Beautiful Mind,2001,8.0,A Beautiful Mind,Ron Howard,https://image.tmdb.org/t/p/w500/8K5W9QnNT7r1V9GuJ5z5KlrROkd.jpg,453
-Big,1988,8.8,Big,Penny Marshall,https://image.tmdb.org/t/p/w500/6RP9H4BobYPU1J2BfgcvYkWJcAY.jpg,2280
-The Company Men,2010,7.0,The Company Men,John Wells,https://image.tmdb.org/t/p/w500/y8RneyB6GvdHLx0zv3nU53wh5BB.jpg,44129
-Good Will Hunting,1997,9.0,Good Will Hunting,Gus Van Sant,https://image.tmdb.org/t/p/w500/dTe3EpJGnfUeR5swLbWv61iRyFc.jpg,489
-Life or Something like it,2002,7.3,Life or Something Like It,Stephen Herek,https://image.tmdb.org/t/p/w500/g4T8KbMijAqQl1qZrXLwa3r2GOY.jpg,16643
-The Holiday,2006,7.9,The Holiday,Nancy Meyers,https://image.tmdb.org/t/p/w500/4TvrnjDdIACRp9Jy4KWO3VxrUrg.jpg,1581
-The Grinch,2000,8.0,How the Grinch Stole Christmas,Ron Howard,https://image.tmdb.org/t/p/w500/iVvFVBcdUMPgPCnLFICzBEwZxgZ.jpg,8871
-Die Hard,1988,8.5,Die Hard,John McTiernan,https://image.tmdb.org/t/p/w500/2PD0HHoyVVAEUhep9JhlKtgyl8m.jpg,562
+title_pt,original_title,runtime,tagline,genres,backdrop_url,poster_url,director,personal_rating,launching_year,tmdb_id
+Superman,Superman,128,Olhe para cima.,"Ficção científica, Aventura, Ação",http://image.tmdb.org/t/p/original/aJDLz1748CIMZkCkyISYe5Hl6I7.jpg,http://image.tmdb.org/t/p/w500/xeZ8oG6W60fEPf9yCjERUXiHRBF.jpg,James Gunn,9.0,2025,1061474
+Quarteto Fantástico: Primeiros Passos,The Fantastic 4: First Steps,115,Bem-vindos à família.,"Ficção científica, Aventura, Ação",http://image.tmdb.org/t/p/original/s94NjfKkcSczZ1FembwmQZwsuwY.jpg,http://image.tmdb.org/t/p/w500/hlWOAWRKSno6UxaE0IXDFVvmzTf.jpg,Matt Shakman,7.0,2025,617126
+Uma Caminhada na Floresta,A Walk in the Woods,104,,"Aventura, Comédia, Drama",http://image.tmdb.org/t/p/original/oXj7C4IuTTtA2iR7hCYtGRy0BS1.jpg,http://image.tmdb.org/t/p/w500/32VIPl1RG9BgJUuydK6qUdjFzCo.jpg,Ken Kwapis,7.0,2015,232572
+Menina de Ouro,Million Dollar Baby,132,"Além de seu silêncio, existe um passado. Além de seus sonhos, há um sentimento. Além da esperança, existe uma memória. Além de sua jornada, existe um amor.",Drama,http://image.tmdb.org/t/p/original/oGMomeS7bE43eN8SGJUaKvQnmud.jpg,http://image.tmdb.org/t/p/w500/edzbBaAHoJGvmNtY2Qck936AgnI.jpg,Clint Eastwood,9.0,2004,70
+Ficção Americana,American Fiction,117,,"Comédia, Drama",http://image.tmdb.org/t/p/original/3mpgltEMgPf8zFtPnAWdDVN8ZT1.jpg,http://image.tmdb.org/t/p/w500/bndwT7YCJv9nEHGSXuzvx9PJ013.jpg,Cord Jefferson,9.0,2023,1056360
+O Aprendiz,The Apprentice,120,,"História, Drama",http://image.tmdb.org/t/p/original/kv9xVrxfLpudBLyYf1QvLCpUQuy.jpg,http://image.tmdb.org/t/p/w500/kSXqBw3QzKqSx8ZAeWL9ms1zw2n.jpg,Ali Abbasi,8.8,2024,1182047
+Ratos e Homens,Of Mice and Men,110,Nós temos um sonho. Um lugar para chamar de lar.,Drama,http://image.tmdb.org/t/p/original/5HVwz8cImMEwcV2z1SMFyJHY51q.jpg,http://image.tmdb.org/t/p/w500/lnecIARJi0C2n5VuDOcVNZmU38.jpg,Gary Sinise,7.5,1992,9609
+Conclave,Conclave,120,O que acontece entre estas paredes vai mudar tudo.,"Drama, Thriller",http://image.tmdb.org/t/p/original/eZzNdjNDvaSoyywy9ICg2UmFwul.jpg,http://image.tmdb.org/t/p/w500/wWn78TMMw8yOdr5sG0Yl9v4saoA.jpg,Edward Berger,8.9,2024,974576
+Green Book: O Guia,Green Book,131,Inspirado em uma amizade verdadeira,"Drama, Comédia, História",http://image.tmdb.org/t/p/original/5En0fmDagt3Pk8d7P3uTwfeQceg.jpg,http://image.tmdb.org/t/p/w500/u9dldwRwQjTZGlIxKaAtAPLAjOv.jpg,Peter Farrelly,9.0,2018,490132
+Sniper Americano,American Sniper,132,O atirador mais letal na história dos Estados Unidos.,"Guerra, Ação",http://image.tmdb.org/t/p/original/rl95VDEP3nsUQmGzE0S1S7y6T0N.jpg,http://image.tmdb.org/t/p/w500/mAXzc2oDTTYcnn6IGHlSXvmXloG.jpg,Clint Eastwood,8.7,2014,190859
+Perfume de Mulher,Scent of a Woman,156,O Coronel Frank Slade tem um plano muito especial para o fim de semana!,Drama,http://image.tmdb.org/t/p/original/fa03pD2qYmms4ZMgAv7PMqfFiGO.jpg,http://image.tmdb.org/t/p/w500/7vYWmKziZCfuXuIesRdVHUtXaLY.jpg,Martin Brest,8.0,1992,9475
+Uma Mente Brilhante,A Beautiful Mind,135,Ele viu o mundo de uma maneira que ninguém poderia imaginar.,"Drama, Romance",http://image.tmdb.org/t/p/original/vVBcIN68kFq681b4lObiNJhEVro.jpg,http://image.tmdb.org/t/p/w500/8K5W9QnNT7r1V9GuJ5z5KlrROkd.jpg,Ron Howard,8.0,2001,453
+Quero Ser Grande,Big,105,Você já teve um segredo realmente grande?,"Fantasia, Drama, Comédia",http://image.tmdb.org/t/p/original/bi9ihIMB9DoXs7odkS5oKkHoK2o.jpg,http://image.tmdb.org/t/p/w500/6RP9H4BobYPU1J2BfgcvYkWJcAY.jpg,Penny Marshall,8.8,1988,2280
+A Grande Virada,The Company Men,104,,Drama,http://image.tmdb.org/t/p/original/nGYko5jtVcdk2csEDX66e87aBWJ.jpg,http://image.tmdb.org/t/p/w500/y8RneyB6GvdHLx0zv3nU53wh5BB.jpg,John Wells,7.0,2010,44129
+Gênio Indomável,Good Will Hunting,126,"Algumas pessoas nunca conseguem acreditar em si mesmas, até que alguém acredite nelas.",Drama,http://image.tmdb.org/t/p/original/bpV8wn48s82au37QyUJ51S7X2Vf.jpg,http://image.tmdb.org/t/p/w500/dTe3EpJGnfUeR5swLbWv61iRyFc.jpg,Gus Van Sant,9.0,1997,489
+Uma Vida em Sete Dias,Life or Something Like It,103,,"Comédia, Drama, Romance",http://image.tmdb.org/t/p/original/AwkaTlvHAc5qQksrXg982CWMkYJ.jpg,http://image.tmdb.org/t/p/w500/g4T8KbMijAqQl1qZrXLwa3r2GOY.jpg,Stephen Herek,7.3,2002,16643
+O Amor Não Tira Férias,The Holiday,136,É véspera de Natal e vamos celebrar ser jovens e estar vivos.,"Comédia, Romance",http://image.tmdb.org/t/p/original/pvVpR8lPRAPbeVU6hqJwD4r9roo.jpg,http://image.tmdb.org/t/p/w500/4TvrnjDdIACRp9Jy4KWO3VxrUrg.jpg,Nancy Meyers,7.9,2006,1581
+O Grinch,How the Grinch Stole Christmas,105,Ele traz a maldade para o verde.,"Família, Comédia, Fantasia",http://image.tmdb.org/t/p/original/sy0vo1cmpKqwPRiMUiJ45jyLsX7.jpg,http://image.tmdb.org/t/p/w500/iVvFVBcdUMPgPCnLFICzBEwZxgZ.jpg,Ron Howard,8.0,2000,8871
+Duro de Matar,Die Hard,132,Doze terroristas. Um policial. As probabilidades estão contra John McClane... É assim que ele gosta.,"Ação, Thriller",http://image.tmdb.org/t/p/original/bvk2AAH64lP2YZs02Q3jskfHT8j.jpg,http://image.tmdb.org/t/p/w500/2PD0HHoyVVAEUhep9JhlKtgyl8m.jpg,John McTiernan,8.5,1988,562

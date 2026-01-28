@@ -9,23 +9,29 @@ class MovieProcessor:
         dataframe = pd.read_csv(input_path, skipinitialspace=True)
         enriched_data = []
 
-        for index, row in dataframe.iterrows():
-            movie_data = self.client.search_movie(row['title'], row['launching_year'])
+        for _, row in dataframe.iterrows():
+            movie_basic = self.client.search_movie(row['title'], row['launching_year'])
+            if movie_basic:
+                movie_id = movie_basic.get('id')
 
-            if movie_data:
-                director = self.client.get_movie_director(movie_data['tmdb_id'])
-                enriched_data.append({
-                    'title': row['title'],
-                    'launching_year': row['launching_year'],
-                    'personal_rating': row['personal_rating'],
-                    'original_title': movie_data['title_original'],
-                    'director': director,
-                    'poster_url': movie_data['poster_url'],
-                    'tmdb_id': movie_data['tmdb_id']
-                })
-            else:
-                enriched_data.append({**row.to_dict(), 'director': 'N/A', 'poster_url': None, 'tmdb_id': None})
+                details = self.client.get_movie_details(movie_id)
+                director = self.client.get_movie_director(movie_id)
 
-            time.sleep(0.2)
-
-        pd.DataFrame(enriched_data).to_csv(output_path, index=False)
+                if details:
+                    full_movie_data = {
+                        **details,
+                        'director': director,
+                        'personal_rating': row['personal_rating'],
+                        'launching_year': row['launching_year'],
+                        'tmdb_id': movie_id
+                    }
+                    enriched_data.append(full_movie_data)
+                    print(f"✅ Sucesso: {details['original_title']}")
+                else:
+                    print(f"❌ Não encontrado: {row['title']}")
+    
+        if enriched_data:
+            pd.DataFrame(enriched_data).to_csv(output_path, index=False)
+            print(f"\n🚀 Fim! Arquivo salvo em: {output_path}")
+        else:
+            print(f"\n⚠️ Nenhum dado foi enriquecido.")
