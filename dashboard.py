@@ -2,7 +2,7 @@ import streamlit as streamlit
 import pandas as pd
 from helpers import formatar_duracao
 
-streamlit.set_page_config(page_title="Movie Wrapped", layout="wide", page_icon="🎬")
+streamlit.set_page_config(page_title="Movies Wrapped", layout="wide", page_icon="🎬")
 
 # --- ESTILOS CSS ---
 streamlit.markdown("""
@@ -12,6 +12,7 @@ streamlit.markdown("""
     .poster-img { width: 100%; height: 380px; object-fit: cover; border-radius: 10px; transition: 0.3s;}
     .poster-img:hover { opacity: 0.8; transform: scale(1.02); }
     .badge {background: #333; color: white; padding: 2px 8px; border-radius: 12px; font-size: 10px; margin-right: 5px;}
+    .rating-text { font-size: 1.25rem; font-weight: 800; color: #FFD700 !important; /* Dourado vibrante */ margin-top: 8px; display: flex; align-items: center; gap: 5px;}
     </style>
 """, unsafe_allow_html=True)
 
@@ -24,7 +25,8 @@ dataframe = load_data()
 # --- SIDEBAR / FILTROS ---
 streamlit.sidebar.header("⚙️ Filtros")
 busca = streamlit.sidebar.text_input("Buscar filme por titulo")
-nota_minima = streamlit.slider("Nota minima", 0.0, 10.0, 7.0)
+streamlit.sidebar.divider()
+nota_minima = streamlit.sidebar.slider("Nota minima", 0.0, 10.0, 7.0)
 
 # Aplicando filtros
 dataframe_filtered = dataframe[dataframe['personal_rating'] >= nota_minima]
@@ -33,14 +35,17 @@ if busca:
                                             dataframe_filtered['original_title'].str.contains(busca, case=False)]
 
 # --- NOVO: BANNER HERÓI (Backdrop + Tagline) ---
+# Fallback para Backdrop e Tagline
 top_movie = dataframe[dataframe['personal_rating'] == dataframe['personal_rating'].max()].iloc[-1]
 
+backdrop = top_movie['backdrop_url'] if pd.notna(top_movie['backdrop_url']) else "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba" # Uma imagem genérica de cinema
+tagline = f'"{top_movie["tagline"]}"' if pd.notna(top_movie['tagline']) and top_movie['tagline'] != "" else ""
+
 streamlit.markdown(f"""
-    <div style="position: relative; height: 350px; border-radius: 20px; overflow: hidden; background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('{top_movie['backdrop_url']}'); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; text-align: center; color: white; margin-bottom: 30px;">
+    <div style="position: relative; height: 350px; border-radius: 20px; overflow: hidden; background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('{backdrop}'); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; text-align: center; color: white; margin-bottom: 30px;">
         <div style="padding: 20px;">
             <h1 style="font-size: 3rem; margin-bottom: 0;">{top_movie['original_title']}</h1>
-            <p style="font-size: 1.3rem; font-style: italic;">"{top_movie['tagline']}"</p>
-            <div style="margin-top: 10px; font-size: 1.1rem;">🏆 Melhor do Ano</div>
+            <p style="font-size: 1.3rem; font-style: italic;">"{tagline}"</p>
         </div>
     </div>
 """, unsafe_allow_html=True)
@@ -58,8 +63,11 @@ if 'runtime' in dataframe.columns:
     coluna3.metric("⌛ Maratona", f"{formatar_duracao(int(longo['runtime']))}", longo['original_title'])
     coluna4.metric("⏱️ Sessão Rápida", f"{formatar_duracao(int(curto['runtime']))}", curto['original_title'])
 
+total_minutos = dataframe['runtime'].sum()
+horas_totais = total_minutos // 60
+
 streamlit.write("---")
-# Pega o filme de maior nota (se houver empate, pega o último da lista)
+streamlit.subheader("🍿 Minha Jornada Cinematográfica")
 
 colunas = streamlit.columns(4)
 for index, row in dataframe_filtered.reset_index().iterrows():
@@ -69,7 +77,7 @@ for index, row in dataframe_filtered.reset_index().iterrows():
         # Preparando Badges de Gênero
         badges_html = ""
         if pd.notna(row['genres']):
-            for g in row['genres'].split(',')[:2]:
+            for g in row['genres'].split(',')[:3]:
                 badges_html += f'<span class="badge">{g.strip()}</span>'
 
         streamlit.markdown(f'''
@@ -78,16 +86,56 @@ for index, row in dataframe_filtered.reset_index().iterrows():
                     <img src="{row['poster_url']}" class="poster-img">
                 </a>
                 <div style="height: 65px; margin-top: 10px; overflow: hidden;">
-                    <div style="font-size: 1.1rem; font-weight: bold; line-height: 1.2;">{row['original_title']}</div>
-                    <div style="color: #888; font-size: 0.85rem;">{row['title_pt']}</div>
+                <div class="movie-title-main">{row['original_title']}</div>
+                <div style="color: #888; font-size: 0.85rem;">{row['title_pt']}</div>
                 </div>
                 <div style="margin-bottom: 10px;">{badges_html}</div>
-                <div style="font-size: 0.85rem; color: #ccc;">🎬 {row['director']}</div>
-                <div style="font-size: 1.2rem; margin-top: 5px;">⭐ <b>{row['personal_rating']}</b></div>
+                <div style="font-size: 0.85rem; color: #ccc;">
+                    🎬 {row['director']} <span style="color: #666; margin-left: 5px;">• {int(row['launching_year'])}</span>
+                </div>
+                <div class="rating-text">⭐ {row['personal_rating']}</div>
             </div>
         ''', unsafe_allow_html=True)
 
-        streamlit.markdown("---")
+
+
+total_minutos = dataframe['runtime'].sum()
+h_totais = total_minutos // 60
+m_totais = total_minutos % 60
+pipocas = total_minutos // 100
+
+streamlit.markdown(f"""
+    <div style="
+        background-color: #1e1e1e; 
+        padding: 25px; 
+        border-radius: 15px; 
+        border: 1px solid #333; 
+        text-align: center;
+        margin: 20px 0;
+    ">
+        <span style="color: #888; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px;">
+            📊 Curiosidades da sua Jornada
+        </span>
+        <div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; margin-top: 15px;">
+            <div style="margin: 10px;">
+                <span style="font-size: 1.8rem;">⏳</span>
+                <span style="font-size: 1.5rem; font-weight: bold; color: white; margin-left: 10px;">
+                    {h_totais}h {m_totais}min
+                </span>
+                <p style="color: #666; margin: 0;">vividos em outras histórias</p>
+            </div>
+            <div style="margin: 10px;">
+                <span style="font-size: 1.8rem;">🍿</span>
+                <span style="font-size: 1.5rem; font-weight: bold; color: white; margin-left: 10px;">
+                    {pipocas} baldes
+                </span>
+                <p style="color: #666; margin: 0;">de pipoca (estimados)</p>
+            </div>
+        </div>
+    </div>
+""", unsafe_allow_html=True)
+
+
 streamlit.markdown(
     "<div style='text-align: center; color: #666;'>"
     "Desenvolvido com Python & Streamlit por [Elias Maia] 🎬"
