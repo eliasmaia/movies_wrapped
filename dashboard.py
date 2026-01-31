@@ -4,7 +4,6 @@ from helpers import formatar_duracao
 
 streamlit.set_page_config(page_title="Movies Wrapped", layout="wide", page_icon="🎬")
 
-# --- ESTILOS CSS ---
 streamlit.markdown("""
     <style>
     .movie-card { border-radius: 10px; background-color: #1e1e1e; padding: 15px; margin-bottom: 20px; min-height: 580px; border: 1px solid #333;}
@@ -20,23 +19,25 @@ streamlit.markdown("""
 def load_data():
     return pd.read_csv("data/movies_enriched.csv")
 
-dataframe = load_data()
+dataframe = load_data().sort_values(by='personal_rating', ascending=False, na_position='last')
 
-# --- SIDEBAR / FILTROS ---
+df_metrics = dataframe[dataframe['personal_rating'] > 0].copy()
+
 streamlit.sidebar.header("⚙️ Filtros")
 busca = streamlit.sidebar.text_input("Buscar filme por titulo")
 streamlit.sidebar.divider()
 nota_minima = streamlit.sidebar.slider("Nota minima", 0.0, 10.0, 7.0)
 
-# Aplicando filtros
-dataframe_filtered = dataframe[dataframe['personal_rating'] >= nota_minima]
+dataframe_filtered = dataframe[
+    (dataframe['personal_rating'] >= nota_minima) | 
+    (dataframe['personal_rating'].isna()) | 
+    (dataframe['personal_rating'] <= 0)
+]
 if busca:
     dataframe_filtered = dataframe_filtered[dataframe_filtered['title_pt'].str.contains(busca, case=False) |
                                             dataframe_filtered['original_title'].str.contains(busca, case=False)]
 
-# --- NOVO: BANNER HERÓI (Backdrop + Tagline) ---
-# Fallback para Backdrop e Tagline
-top_movie = dataframe[dataframe['personal_rating'] == dataframe['personal_rating'].max()].iloc[-1]
+top_movie = df_metrics[df_metrics['personal_rating'] == df_metrics['personal_rating'].max()].iloc[-1]
 
 backdrop = top_movie['backdrop_url'] if pd.notna(top_movie['backdrop_url']) else "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba" # Uma imagem genérica de cinema
 tagline = f'"{top_movie["tagline"]}"' if pd.notna(top_movie['tagline']) and top_movie['tagline'] != "" else ""
@@ -50,21 +51,15 @@ streamlit.markdown(f"""
     </div>
 """, unsafe_allow_html=True)
 
-# --- MÉTRICAS DE RECORDE (Runtime) ---
-
-# --- NOVO: SEÇÃO DE ESTATÍSTICAS ---
 coluna1, coluna2, coluna3, coluna4 = streamlit.columns(4)
-coluna1.metric("Filmes", len(dataframe))
-coluna2.metric("Média Geral", f"{dataframe['personal_rating'].mean():.1f}")
+coluna1.metric("Filmes Finalizados", len(df_metrics))
+coluna2.metric("Média Geral", f"{df_metrics['personal_rating'].mean():.1f}")
 
-if 'runtime' in dataframe.columns:
-    longo = dataframe.loc[dataframe['runtime'].idxmax()]
-    curto = dataframe.loc[dataframe['runtime'].idxmin()]
+if 'runtime' in df_metrics.columns:
+    longo = df_metrics.loc[df_metrics['runtime'].idxmax()]
+    curto = df_metrics.loc[df_metrics['runtime'].idxmin()]
     coluna3.metric("⌛ Maratona", f"{formatar_duracao(int(longo['runtime']))}", longo['original_title'])
     coluna4.metric("⏱️ Sessão Rápida", f"{formatar_duracao(int(curto['runtime']))}", curto['original_title'])
-
-total_minutos = dataframe['runtime'].sum()
-horas_totais = total_minutos // 60
 
 streamlit.write("---")
 streamlit.subheader("🍿 Minha Jornada Cinematográfica")
@@ -74,34 +69,50 @@ for index, row in dataframe_filtered.reset_index().iterrows():
     with colunas[index % 4]:
         tmdb_url = f"https://www.themoviedb.org/movie/{row['tmdb_id']}"
         
-        # Preparando Badges de Gênero
+        rating = row['personal_rating']
+        if pd.isna(rating) or rating <= 0:
+            rating_display = "🚫 Abandonado"
+            rating_color = "#888"
+            card_opacity = "0.6"
+            border_color = "#444"
+        else:
+            rating_display = f"⭐ {rating}"
+            rating_color = "#FFD700"
+            card_opacity = "1.0"
+            border_color = "#FFD700" if rating >= 9 else "#333"
+
         badges_html = ""
         if pd.notna(row['genres']):
             for g in row['genres'].split(',')[:3]:
                 badges_html += f'<span class="badge">{g.strip()}</span>'
+        
+        border_width = "2px" if (not pd.isna(rating) and rating >= 9) else "1px"
+        card_style = f"opacity: {card_opacity}; border: {border_width} solid {border_color};"
+        ano_display = f"({int(row['launching_year'])})"
 
-        streamlit.markdown(f'''
-            <div class="movie-card">
+        streamlit.markdown(f"""
+            <div class="movie-card" style="{card_style}">
                 <a href="{tmdb_url}" target="_blank">
                     <img src="{row['poster_url']}" class="poster-img">
                 </a>
                 <div style="height: 65px; margin-top: 10px; overflow: hidden;">
-                <div class="movie-title-main">{row['original_title']}</div>
-                <div style="color: #888; font-size: 0.85rem;">{row['title_pt']}</div>
+                    <div class="movie-title-main">{row['original_title']}</div>
+                    <div style="color: #888; font-size: 0.85rem;">{row['title_pt']}</div>
                 </div>
                 <div style="margin-bottom: 10px;">{badges_html}</div>
                 <div style="font-size: 0.85rem; color: #ccc;">
-                    🎬 {row['director']} <span style="color: #666; margin-left: 5px;">• {int(row['launching_year'])}</span>
+                    🎬 {row['director']} <br>
+                    <span style="color: #666;">{ano_display}</span>
                 </div>
-                <div class="rating-text">⭐ {row['personal_rating']}</div>
+                <div class="rating-text" style="color: {rating_color} !important;">
+                    {rating_display}
+                </div>
             </div>
-        ''', unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
 
-
-
-total_minutos = dataframe['runtime'].sum()
-h_totais = total_minutos // 60
-m_totais = total_minutos % 60
+total_minutos = df_metrics['runtime'].sum()
+horas_totais = total_minutos // 60
+minutos_totais = total_minutos % 60
 pipocas = total_minutos // 100
 
 streamlit.markdown(f"""
@@ -120,7 +131,7 @@ streamlit.markdown(f"""
             <div style="margin: 10px;">
                 <span style="font-size: 1.8rem;">⏳</span>
                 <span style="font-size: 1.5rem; font-weight: bold; color: white; margin-left: 10px;">
-                    {h_totais}h {m_totais}min
+                    {horas_totais}h {minutos_totais}min
                 </span>
                 <p style="color: #666; margin: 0;">vividos em outras histórias</p>
             </div>
@@ -137,8 +148,13 @@ streamlit.markdown(f"""
 
 
 streamlit.markdown(
-    "<div style='text-align: center; color: #666;'>"
-    "Desenvolvido com Python & Streamlit por [Elias Maia] 🎬"
-    "</div>", 
+    """
+    <div style='text-align: center; color: #666; margin-top: 50px; padding: 20px; border-top: 1px solid #333;'>
+        Desenvolvido com Python & Streamlit por 
+        <a href='https://github.com/eliasmaia' target='_blank' style='color: #888; text-decoration: none; border-bottom: 1px solid #444;'>
+            Elias Maia
+        </a> 🎬
+    </div>
+    """, 
     unsafe_allow_html=True
 )
