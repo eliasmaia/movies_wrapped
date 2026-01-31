@@ -40,7 +40,7 @@ if busca:
 top_movie = df_metrics[df_metrics['personal_rating'] == df_metrics['personal_rating'].max()].iloc[-1]
 
 backdrop = top_movie['backdrop_url'] if pd.notna(top_movie['backdrop_url']) else "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba" # Uma imagem genérica de cinema
-tagline = f'"{top_movie["tagline"]}"' if pd.notna(top_movie['tagline']) and top_movie['tagline'] != "" else ""
+tagline = top_movie["tagline"] if pd.notna(top_movie['tagline']) and top_movie['tagline'] != "" else "Todas as vezes que vou ao cinema é mágico, e não interessa que filme que é. (Steven Spielberg)"
 
 streamlit.markdown(f"""
     <div style="position: relative; height: 350px; border-radius: 20px; overflow: hidden; background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('{backdrop}'); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; text-align: center; color: white; margin-bottom: 30px;">
